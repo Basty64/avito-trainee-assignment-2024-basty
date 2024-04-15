@@ -10,7 +10,7 @@ type Banner struct {
 	is_active  bool
 }
 
-func NewBanner(tag_id int, feature_id int, content string, is_active bool) *Banner {
+func NewBanner(tag_id int, feature_id int, content string) *Banner {
 	return &Banner{
 		banner_id:  uuid.Must(uuid.NewV7()),
 		tag_id:     tag_id,
