@@ -4,13 +4,13 @@ import "github.com/gofrs/uuid"
 
 type Banner struct {
 	banner_id  uuid.UUID `json:"banner_Id,omitempty"`
-	tag_id     int
+	tag_id     []int
 	feature_id int
 	content    string
 	is_active  bool
 }
 
-func NewBanner(tag_id int, feature_id int, content string) *Banner {
+func NewBanner(tag_id []int, feature_id int, content string) *Banner {
 	return &Banner{
 		banner_id:  uuid.Must(uuid.NewV7()),
 		tag_id:     tag_id,
@@ -25,5 +25,5 @@ func (b *Banner) ISActive() {
 }
 
 type BannerRepository interface {
-	Save(banner Banner) error
+	Save(banner *Banner) error
 }
