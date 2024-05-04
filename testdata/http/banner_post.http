@@ -6,8 +6,6 @@ Content-Type: application/json
     0
   ],
   "feature_id": 0,
-  "content": "{\"title\": \"some_title\", \"text\": \"some_text\", \"url\": \"some_url\"}",
-  "is_active": true,
-  "surname": "Bondarenko",
-  "nickname": "Thebasty"
+  "content": "{\"title\": \"some_title\", text: \"some_text\", \"url\": \"some_url\"}",
+  "is_active": true
 }

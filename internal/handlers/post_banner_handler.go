@@ -1,57 +1,55 @@
 package handlers
 
 import (
+	"avito-trainee-assignment-2024-basty/internal/models"
 	"avito-trainee-assignment-2024-basty/internal/services"
 	"encoding/json"
-	"math/rand"
 	"net/http"
 )
 
-type POSTBannerHandler struct {
-	service *services.CreateBannerService
+type Service interface {
+	POSTBanner(Tag_IDS []int, feature_id int, content models.Content, isActive bool) (int, error)
 }
 
-func NewPOSTBannerHandler(s *services.CreateBannerService) *POSTBannerHandler {
-	return &POSTBannerHandler{service: s}
+type Handlers struct {
+	service *services.Service
 }
 
-type POSTBannerRequest struct {
-	Content  string `json:"content"`
-	Surname  string `json:"surname"`
-	Nickname string `json:"nickname"`
+func NewHandlers(s *services.Service) *Handlers {
+	return &Handlers{service: s}
 }
 
-func (P POSTBannerHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
+func POSTBannerHandler(service Service) http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
 
-	message := POSTBannerRequest{}
-	err := json.NewDecoder(request.Body).Decode(&message)
+		POSTBannerRequest := models.POSTBannerRequest{}
 
-	print(Reverse(message.Surname), "  ", Reverse(message.Nickname))
+		err := json.NewDecoder(request.Body).Decode(&POSTBannerRequest)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusBadRequest)
+		}
 
-	savedMessage := POSTMessagesResponse{message.Nickname, rand.Int()}
+		response, err := service.POSTBanner(
+			POSTBannerRequest.TagIDS,
+			POSTBannerRequest.FeatureID,
+			POSTBannerRequest.Content,
+			POSTBannerRequest.IsActive)
 
-	response, err := json.Marshal(savedMessage)
-	if err != nil {
-		print(err)
+		if err != nil {
+			print(err)
+		}
+
+		err = json.NewEncoder(writer).Encode(response)
+		if err != nil {
+			print(err)
+		}
+
+		writer.WriteHeader(http.StatusCreated)
+
+		//writer.WriteHeader(http.StatusCreated)
+		//_, err = writer.Write(response)
+		//if err != nil {
+		//	print(err)
+		//}
 	}
-
-	writer.WriteHeader(http.StatusCreated)
-	_, err = writer.Write(response)
-	if err != nil {
-		print(err)
-	}
-
-}
-
-type POSTMessagesResponse struct {
-	Content string
-	ID      int
-}
-
-func Reverse(s string) string {
-	runes := []rune(s)
-	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
-		runes[i], runes[j] = runes[j], runes[i]
-	}
-	return string(runes)
 }

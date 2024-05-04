@@ -1,29 +1,28 @@
 package models
 
-import "github.com/gofrs/uuid"
+import (
+	"time"
+)
 
-type Banner struct {
-	banner_id  uuid.UUID `json:"banner_Id,omitempty"`
-	tag_id     []int
-	feature_id int
-	content    string
-	is_active  bool
+type POSTBannerRequest struct {
+	TagIDS    []int   `json:"tag_ids"`
+	FeatureID int     `json:"feature_id"`
+	Content   Content `json:"content"`
+	IsActive  bool    `json:"is_active"`
 }
 
-func NewBanner(tag_id []int, feature_id int, content string) *Banner {
-	return &Banner{
-		banner_id:  uuid.Must(uuid.NewV7()),
-		tag_id:     tag_id,
-		feature_id: feature_id,
-		content:    content,
-		is_active:  false,
-	}
+type BannerResponse struct {
+	banner_id  int       `json:"banner_Id,omitempty"`
+	tag_ids    []int     `json:"tag_id"`
+	feature_id int       `json:"feature_id"`
+	content    Content   `json:"content"`
+	is_active  bool      `json:"is_active"`
+	created_at time.Time `json:"created_at"`
+	updated_at time.Time `json:"updated_at"`
 }
 
-func (b *Banner) ISActive() {
-	b.is_active = true
-}
-
-type BannerRepository interface {
-	Save(banner *Banner) error
+type Content struct {
+	Title string `json:"title"`
+	Text  string `json:"text"`
+	Url   string `json:"url"`
 }
