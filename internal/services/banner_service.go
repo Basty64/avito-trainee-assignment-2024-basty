@@ -3,6 +3,7 @@ package services
 import (
 	"avito-trainee-assignment-2024-basty/internal/models"
 	"avito-trainee-assignment-2024-basty/internal/repository/postgres"
+	"context"
 )
 
 type Service struct {
@@ -18,9 +19,10 @@ func NewService(repository *postgres.BannersRepository) *Service {
 //func GETUserBanner() (models.BannerResponse, error){}
 //func GETBanner() ([]models.BannerResponse, error){}
 
-func (s *Service) POSTBanner(Tag_IDS []int, feature_id int, content models.Content, isActive bool) (int, error) {
+func (s *Service) POSTBanner(ctx context.Context, TagIDS []int, FeatureID int, Content models.Content, IsActive bool) (int, error) {
 
-	return 0, nil
+	return s.bannerRepository.POSTBanner(ctx, TagIDS, FeatureID, Content, IsActive)
+
 }
 
 //func DELETEBanner() error{}

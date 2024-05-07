@@ -31,9 +31,9 @@ func NewApp() (*App, error) {
 		panic(err)
 	}
 
-	if err := postgresPool.Ping(context.Background()); err != nil {
-		panic(err)
-	}
+	//if err := postgresPool.Ping(context.Background()); err != nil {
+	//	panic(err)
+	//}
 
 	if err != nil {
 		log.Fatalf("Unable to connection to database: %v\n", err)

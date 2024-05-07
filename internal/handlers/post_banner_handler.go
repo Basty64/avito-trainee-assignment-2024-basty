@@ -3,12 +3,13 @@ package handlers
 import (
 	"avito-trainee-assignment-2024-basty/internal/models"
 	"avito-trainee-assignment-2024-basty/internal/services"
+	"context"
 	"encoding/json"
 	"net/http"
 )
 
 type Service interface {
-	POSTBanner(Tag_IDS []int, feature_id int, content models.Content, isActive bool) (int, error)
+	POSTBanner(ctx context.Context, Tag_IDS []int, feature_id int, content models.Content, isActive bool) (int, error)
 }
 
 type Handlers struct {
@@ -30,6 +31,7 @@ func POSTBannerHandler(service Service) http.HandlerFunc {
 		}
 
 		response, err := service.POSTBanner(
+			context.Background(),
 			POSTBannerRequest.TagIDS,
 			POSTBannerRequest.FeatureID,
 			POSTBannerRequest.Content,
