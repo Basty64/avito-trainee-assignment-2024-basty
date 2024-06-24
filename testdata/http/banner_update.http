@@ -1,0 +1,11 @@
+PATCH localhost:8080/banner/{id}
+Content-Type: application/json
+
+{
+  "tag_ids": [
+    0
+  ],
+  "feature_id": 0,
+  "content": "{\"title\": \"some_title\", \"text\": \"some_text\", \"url\": \"some_url\"}",
+  "is_active": true
+}
